@@ -1,0 +1,241 @@
+{
+  "_comment": "Each key is a finding the analyzer can emit. 'products' lists categories from products.json. Edit freely.",
+
+  "skin_texture": {
+    "dimension": "skin",
+    "title": "Smooth out skin texture",
+    "summary": "The photo picks up some uneven texture on the cheeks or forehead. A simple, consistent routine usually shows results in 4–8 weeks.",
+    "steps": [
+      "Cleanse gently twice a day — skip harsh scrubs, they can make texture worse.",
+      "Add a niacinamide serum (5–10%) once a day to refine pores and even texture.",
+      "Finish with a light moisturizer so skin stays smooth instead of tight."
+    ],
+    "products": ["gentle_cleanser", "niacinamide_serum", "moisturizer"]
+  },
+  "skin_redness": {
+    "dimension": "skin",
+    "title": "Calm visible redness",
+    "summary": "There's a bit more redness than average in the cheek area. Soothing ingredients and less irritation usually help.",
+    "steps": [
+      "Use lukewarm water, not hot, when washing your face.",
+      "Look for calming ingredients like centella, azelaic acid or ceramides.",
+      "Wear sunscreen daily — UV makes redness more noticeable over time.",
+      "If redness is persistent or painful, a dermatologist is the best next step."
+    ],
+    "products": ["soothing_care", "sunscreen", "moisturizer"]
+  },
+  "skin_tone": {
+    "dimension": "skin",
+    "title": "Even out skin tone",
+    "summary": "Brightness varies a little between areas of your face (for example, forehead vs. cheeks). Sun protection is the single biggest lever here.",
+    "steps": [
+      "Apply SPF 30+ every morning, even on cloudy days.",
+      "A vitamin C or niacinamide serum can gradually even out tone.",
+      "Be patient — tone changes take 6–12 weeks to show."
+    ],
+    "products": ["sunscreen", "niacinamide_serum"]
+  },
+  "skin_oil": {
+    "dimension": "skin",
+    "title": "Control shine",
+    "summary": "Some areas reflect a lot of light, which often reads as oily skin on camera.",
+    "steps": [
+      "Use a gel cleanser in the evening to clear excess oil.",
+      "Try a BHA (salicylic acid) product 2–3 times a week.",
+      "Keep moisturizing with an oil-free formula — stripping skin can make it produce more oil.",
+      "Blotting papers are a quick fix before photos."
+    ],
+    "products": ["oil_control", "gentle_cleanser", "moisturizer"]
+  },
+  "skin_undereye": {
+    "dimension": "skin",
+    "title": "Brighten the under-eye area",
+    "summary": "The under-eye area looks a bit darker than your cheeks. Sleep, hydration and a caffeine eye product can help.",
+    "steps": [
+      "Aim for 7–9 hours of sleep and stay hydrated.",
+      "Use a caffeine eye serum in the morning to reduce puffiness.",
+      "Cold compresses for a few minutes help on rough mornings."
+    ],
+    "products": ["eye_care"]
+  },
+  "skin_maintain": {
+    "dimension": "skin",
+    "title": "Protect what's working",
+    "summary": "Your skin reads clear in this photo. A simple maintenance routine keeps it that way.",
+    "steps": [
+      "Cleanse, moisturize, and use SPF every morning.",
+      "Drink water and keep a consistent sleep schedule."
+    ],
+    "products": ["sunscreen", "moisturizer"]
+  },
+
+  "beard_patchy": {
+    "dimension": "grooming",
+    "title": "Shape or tidy facial hair",
+    "summary": "Facial hair looks uneven between the two sides of your face. Either a cleaner shape or a closer trim usually looks sharper.",
+    "steps": [
+      "Pick one length and trim evenly — a short, even stubble often looks fuller than a patchy longer beard.",
+      "Define a neckline about two fingers above your Adam's apple.",
+      "Beard oil softens hair and makes coverage look more even."
+    ],
+    "products": ["beard_trimmer", "beard_care"]
+  },
+  "beard_define": {
+    "dimension": "grooming",
+    "title": "Sharpen your facial hair lines",
+    "summary": "Facial hair edges look soft in this photo. Crisp cheek and neck lines make a big difference in how groomed it looks.",
+    "steps": [
+      "Use a trimmer with a detail head to clean up cheek and neck lines.",
+      "Trim every 3–5 days to keep edges sharp."
+    ],
+    "products": ["beard_trimmer", "beard_care"]
+  },
+  "brows_tidy": {
+    "dimension": "grooming",
+    "title": "Tidy your brows",
+    "summary": "Your brows differ a little between sides. Small brow grooming makes the face look more balanced and put-together.",
+    "steps": [
+      "Brush brows upward with a clear brow gel.",
+      "Remove only stray hairs below the brow line and between the brows.",
+      "If unsure, a one-time professional shaping gives you a template to maintain."
+    ],
+    "products": ["brow_care"]
+  },
+  "lips_care": {
+    "dimension": "grooming",
+    "title": "Keep lips smooth",
+    "summary": "A small, easy upgrade: hydrated lips look healthier in photos and in person.",
+    "steps": [
+      "Use a lip balm with SPF during the day.",
+      "Apply a thicker balm before bed."
+    ],
+    "products": ["lip_care"]
+  },
+  "grooming_maintain": {
+    "dimension": "grooming",
+    "title": "Keep up your grooming",
+    "summary": "Grooming looks clean in this photo. A regular schedule keeps it consistent.",
+    "steps": [
+      "Set a weekly reminder for trims and brow tidying.",
+      "Keep a lip balm and a small comb in your bag."
+    ],
+    "products": ["lip_care", "brow_care"]
+  },
+
+  "hair_frizz": {
+    "dimension": "hair",
+    "title": "Reduce frizz and flyaways",
+    "summary": "The hair outline shows a lot of fine flyaways. Moisture and a light styling product usually tame this.",
+    "steps": [
+      "Use a conditioner every wash and a leave-in on damp hair.",
+      "Dry with a microfiber towel or T-shirt instead of a rough towel.",
+      "Finish with a small amount of light cream or oil on the ends."
+    ],
+    "products": ["anti_frizz", "hair_styling"]
+  },
+  "hair_shape": {
+    "dimension": "hair",
+    "title": "Give your hair more structure",
+    "summary": "Your hair could frame your face more. A cut with defined shape, styled with a light product, adds polish.",
+    "steps": [
+      "Ask your barber or stylist for a cut that suits your face shape — show them a reference photo.",
+      "Use a matte clay or cream to add volume and texture.",
+      "Get trims every 4–6 weeks to keep the shape."
+    ],
+    "products": ["haircut_styles", "hair_styling"]
+  },
+  "hair_not_visible": {
+    "dimension": "hair",
+    "title": "Retake with hair in frame",
+    "summary": "Your hair was mostly out of frame or covered, so this score is a neutral estimate.",
+    "steps": [
+      "Leave some space above your head when framing the shot.",
+      "Remove hats or hoods for a full read."
+    ],
+    "products": []
+  },
+  "hair_maintain": {
+    "dimension": "hair",
+    "title": "Keep your hair in shape",
+    "summary": "Your hair looks neat in this photo. Regular trims keep the style sharp.",
+    "steps": [
+      "Book trims every 4–8 weeks depending on length.",
+      "Use heat protectant if you style with heat."
+    ],
+    "products": ["hair_styling"]
+  },
+
+  "symmetry_balance": {
+    "dimension": "symmetry",
+    "title": "Use grooming to boost balance",
+    "summary": "Every face is a little asymmetric — that's normal. Grooming choices can make features look more balanced.",
+    "steps": [
+      "Even out brow shape and thickness on both sides.",
+      "Try a slightly off-center part or textured style to soften asymmetry.",
+      "Shoot from straight on at eye level — tilted angles exaggerate differences."
+    ],
+    "products": ["brow_care", "hair_styling"]
+  },
+
+  "pres_lighting": {
+    "dimension": "presentation",
+    "title": "Find better light",
+    "summary": "Lighting in this photo is uneven or dim, which hides detail and can lower every score.",
+    "steps": [
+      "Face a window during the day — soft natural light is the most flattering.",
+      "Avoid overhead lights only; they cast shadows under the eyes.",
+      "At night, a small LED or ring light in front of you works well."
+    ],
+    "products": ["photo_light"]
+  },
+  "pres_angle": {
+    "dimension": "presentation",
+    "title": "Straighten the camera angle",
+    "summary": "Your head is tilted or turned. A straight-on, eye-level angle reads more confident and gives a fairer analysis.",
+    "steps": [
+      "Hold the camera at eye level, about an arm's length away.",
+      "Keep your chin level and your face toward the lens."
+    ],
+    "products": []
+  },
+  "pres_expression": {
+    "dimension": "presentation",
+    "title": "Relax into your expression",
+    "summary": "A relaxed, approachable expression makes a big difference in how you come across.",
+    "steps": [
+      "Try a slight, natural smile — think of something that genuinely makes you smile.",
+      "Relax your forehead and jaw; tension shows on camera."
+    ],
+    "products": []
+  },
+  "pres_framing": {
+    "dimension": "presentation",
+    "title": "Frame the shot better",
+    "summary": "Your face is very small, very large or off-center in the frame.",
+    "steps": [
+      "Fill about a third to half of the frame with your face.",
+      "Center your face and leave a little space above your head."
+    ],
+    "products": []
+  },
+  "pres_blur": {
+    "dimension": "presentation",
+    "title": "Keep the photo sharp",
+    "summary": "The photo looks soft or blurry, which hides detail.",
+    "steps": [
+      "Wipe your camera lens.",
+      "Hold still and tap to focus on your face before capturing.",
+      "More light helps the camera avoid motion blur."
+    ],
+    "products": []
+  },
+  "presentation_maintain": {
+    "dimension": "presentation",
+    "title": "Great shot setup",
+    "summary": "Lighting, angle and framing look good. Use the same setup for future check-ins so you can compare fairly.",
+    "steps": [
+      "Retake in the same spot and time of day to track progress."
+    ],
+    "products": []
+  }
+}

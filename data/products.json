@@ -1,0 +1,72 @@
+{
+  "_comment": "Example products per category. These are illustrative picks, not endorsements or affiliate links. Edit, add or remove freely.",
+
+  "gentle_cleanser": [
+    { "name": "Hydrating Facial Cleanser", "brand": "CeraVe", "price": "$", "reason": "Non-foaming and fragrance-free, so it cleans without stripping or roughening texture." },
+    { "name": "Gentle Skin Cleanser", "brand": "Cetaphil", "price": "$", "reason": "Very mild formula that works for almost every skin type." },
+    { "name": "Toleriane Hydrating Gentle Cleanser", "brand": "La Roche-Posay", "price": "$$", "reason": "Ceramide-rich cleanser that supports the skin barrier." }
+  ],
+  "moisturizer": [
+    { "name": "Daily Moisturizing Lotion", "brand": "CeraVe", "price": "$", "reason": "Lightweight with ceramides and hyaluronic acid — hydrates without feeling greasy." },
+    { "name": "Hydro Boost Water Gel", "brand": "Neutrogena", "price": "$", "reason": "Oil-free gel that suits oily or combination skin." },
+    { "name": "Ultra Facial Cream", "brand": "Kiehl's", "price": "$$", "reason": "Richer cream for dry skin or cold weather." }
+  ],
+  "niacinamide_serum": [
+    { "name": "Niacinamide 10% + Zinc 1%", "brand": "The Ordinary", "price": "$", "reason": "Affordable serum that targets pores, texture and uneven tone." },
+    { "name": "Clinical Niacinamide 20% Treatment", "brand": "Paula's Choice", "price": "$$", "reason": "Stronger option for stubborn texture and enlarged pores." }
+  ],
+  "soothing_care": [
+    { "name": "Azelaic Acid Suspension 10%", "brand": "The Ordinary", "price": "$", "reason": "Helps calm redness and evens tone over time." },
+    { "name": "Cicaplast Baume B5", "brand": "La Roche-Posay", "price": "$$", "reason": "Soothing balm that comforts irritated, red skin." },
+    { "name": "Centella Calming Gel Cream", "brand": "Purito", "price": "$", "reason": "Lightweight centella moisturizer for sensitive skin." }
+  ],
+  "oil_control": [
+    { "name": "Skin Perfecting 2% BHA Liquid Exfoliant", "brand": "Paula's Choice", "price": "$$", "reason": "Salicylic acid clears inside pores and reduces shine." },
+    { "name": "Effaclar Mat", "brand": "La Roche-Posay", "price": "$$", "reason": "Mattifying moisturizer that keeps shine down through the day." },
+    { "name": "Oil-Absorbing Blotting Sheets", "brand": "Clean & Clear", "price": "$", "reason": "Instant shine fix before photos or meetings." }
+  ],
+  "eye_care": [
+    { "name": "Caffeine Solution 5% + EGCG", "brand": "The Ordinary", "price": "$", "reason": "Caffeine helps reduce puffiness and the look of dark circles." },
+    { "name": "Eye Repair Cream", "brand": "CeraVe", "price": "$", "reason": "Gentle hydration for the thin under-eye skin." }
+  ],
+  "sunscreen": [
+    { "name": "UV Clear SPF 46", "brand": "EltaMD", "price": "$$", "reason": "Lightweight, calming sunscreen that doesn't leave a white cast." },
+    { "name": "Unseen Sunscreen SPF 40", "brand": "Supergoop!", "price": "$$", "reason": "Invisible gel finish — easy to wear every day." },
+    { "name": "AM Facial Moisturizing Lotion SPF 30", "brand": "CeraVe", "price": "$", "reason": "Moisturizer and SPF in one step." }
+  ],
+  "beard_trimmer": [
+    { "name": "Series 7000 Multigroom", "brand": "Philips Norelco", "price": "$$", "reason": "Adjustable guards for an even length plus a detail trimmer for clean lines." },
+    { "name": "All-in-One Trimmer", "brand": "Braun", "price": "$$", "reason": "Precise length settings make an even stubble easy." }
+  ],
+  "beard_care": [
+    { "name": "Beard Oil", "brand": "Honest Amish", "price": "$", "reason": "Softens hair and makes coverage look fuller and more even." },
+    { "name": "Beard Balm", "brand": "Jack Black", "price": "$$", "reason": "Light hold that tames stray hairs." }
+  ],
+  "brow_care": [
+    { "name": "Clear Brow Gel", "brand": "Anastasia Beverly Hills", "price": "$$", "reason": "Keeps brows brushed and neat all day without looking styled." },
+    { "name": "Slant Tweezers", "brand": "Tweezerman", "price": "$", "reason": "Precise tool for removing stray hairs." }
+  ],
+  "lip_care": [
+    { "name": "Lip Balm SPF 15", "brand": "Jack Black", "price": "$", "reason": "Hydrates and protects lips from sun." },
+    { "name": "Lip Sleeping Mask", "brand": "Laneige", "price": "$$", "reason": "Overnight treatment for smoother lips by morning." }
+  ],
+  "anti_frizz": [
+    { "name": "Leave-In Conditioner", "brand": "It's a 10", "price": "$", "reason": "Detangles and adds moisture to reduce frizz." },
+    { "name": "Extra Strength Smoothing Serum", "brand": "John Frieda Frizz Ease", "price": "$", "reason": "Smooths flyaways and adds shine." },
+    { "name": "Coconut Curl Cream", "brand": "SheaMoisture", "price": "$", "reason": "Defines curls and controls frizz for textured hair." }
+  ],
+  "hair_styling": [
+    { "name": "Matte Clay", "brand": "Hanz de Fuko", "price": "$$", "reason": "Natural, textured hold that adds volume without shine." },
+    { "name": "Molding Cream", "brand": "American Crew", "price": "$", "reason": "Medium hold and a soft finish for everyday styles." },
+    { "name": "Sea Salt Spray", "brand": "Bumble and bumble", "price": "$$", "reason": "Adds texture and body to flat hair." }
+  ],
+  "haircut_styles": [
+    { "name": "Textured crop", "brand": "Haircut idea", "price": "Barber", "reason": "Short and low-maintenance, adds shape on top while keeping the sides clean." },
+    { "name": "Classic taper", "brand": "Haircut idea", "price": "Barber", "reason": "Gradual fade that looks neat as it grows out." },
+    { "name": "Layered cut", "brand": "Haircut idea", "price": "Stylist", "reason": "Layers add movement and frame the face for medium or long hair." }
+  ],
+  "photo_light": [
+    { "name": "10\" LED Ring Light", "brand": "Neewer", "price": "$", "reason": "Even front light for selfies and video calls." },
+    { "name": "Clip-on Selfie Light", "brand": "Generic", "price": "$", "reason": "Small light that clips to your phone for instant better lighting." }
+  ]
+}
