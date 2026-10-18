@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0c11" />
+  <meta name="description" content="Take a selfie and get an encouraging appearance report with tips and product ideas. Your photo never leaves your device." />
+  <title>Appearance Rater</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- ============ ANALYZE ============ -->
+    <section class="view" id="view-analyze" data-view="analyze">
+      <header class="page-head">
+        <div>
+          <p class="eyebrow" id="greeting">Hello</p>
+          <h1>Face Check</h1>
+        </div>
+        <span class="engine-pill" id="engine-pill" title="Analysis engine status"><span class="dot"></span><span class="txt">Loading model…</span></span>
+      </header>
+
+      <div class="card latest hidden" id="latest-card">
+        <div class="latest-photo"><canvas id="latest-thumb"></canvas></div>
+        <div class="latest-body">
+          <p class="muted small">Latest scan</p>
+          <p class="latest-score" id="latest-score">—</p>
+          <p class="potential small" id="latest-potential"></p>
+          <button class="btn btn-ghost btn-sm" data-goto="report">View report</button>
+        </div>
+      </div>
+
+      <div class="card capture-card">
+        <div class="guide">
+          <svg viewBox="0 0 200 240" aria-hidden="true">
+            <defs>
+              <linearGradient id="g-oval" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#7c6cff" /><stop offset="1" stop-color="#21d4fd" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="100" cy="118" rx="64" ry="84" fill="none" stroke="url(#g-oval)" stroke-width="3" stroke-dasharray="7 7" />
+            <g stroke="#e8ebf5" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85">
+              <path d="M20 40 V20 H40" /><path d="M160 20 H180 V40" /><path d="M20 200 V220 H40" /><path d="M160 220 H180 V200" />
+            </g>
+            <g fill="#21d4fd">
+              <circle cx="78" cy="104" r="3.5" /><circle cx="122" cy="104" r="3.5" /><circle cx="100" cy="128" r="3.5" />
+              <circle cx="84" cy="156" r="3.5" /><circle cx="116" cy="156" r="3.5" /><circle cx="100" cy="190" r="3.5" />
+            </g>
+            <line x1="100" y1="44" x2="100" y2="204" stroke="#7c6cff" stroke-width="1.5" stroke-dasharray="3 5" opacity=".7" />
+          </svg>
+        </div>
+        <h2>Get your appearance report</h2>
+        <p class="muted">A quick, encouraging read on skin, symmetry, grooming, hair and presentation — plus tips to level up.</p>
+        <div class="actions">
+          <button class="btn btn-primary" id="btn-camera">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+            Take a selfie
+          </button>
+          <button class="btn btn-secondary" id="btn-upload">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 15v4h16v-4" /></svg>
+            Upload a photo
+          </button>
+        </div>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden />
+        <input type="file" id="camera-input" accept="image/*" capture="user" hidden />
+      </div>
+
+      <h3 class="section-title">For the best read</h3>
+      <div class="tips">
+        <div class="tip"><span class="tip-ic">☀️</span><span>Soft, even light</span></div>
+        <div class="tip"><span class="tip-ic">🎯</span><span>Face the camera</span></div>
+        <div class="tip"><span class="tip-ic">🕶️</span><span>No glasses or hats</span></div>
+      </div>
+
+      <div class="card privacy">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
+        <p><strong>Private by design.</strong> Your photo is analyzed on this device and is never uploaded or saved.</p>
+      </div>
+    </section>
+
+    <!-- ============ REPORT ============ -->
+    <section class="view hidden" id="view-report" data-view="report">
+      <div class="empty" data-empty>
+        <p class="empty-ic">📊</p>
+        <h2>No report yet</h2>
+        <p class="muted">Take or upload a selfie to see your score breakdown.</p>
+        <button class="btn btn-primary" data-goto="analyze">Start a scan</button>
+      </div>
+      <div data-filled class="hidden">
+        <header class="page-head">
+          <div>
+            <h1>Analysis Complete</h1>
+            <p class="muted small" id="report-date"></p>
+          </div>
+          <button class="icon-btn" id="btn-clear" title="Delete photo and results" aria-label="Delete photo and results">
+            <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg>
+          </button>
+        </header>
+
+        <div class="photo-card">
+          <canvas id="report-photo"></canvas>
+          <div class="photo-tools">
+            <button class="round-btn active" id="tgl-points" title="Toggle landmarks" aria-pressed="true">
+              <svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2" /><circle cx="18" cy="7" r="2" /><circle cx="12" cy="17" r="2" /><path d="M7.5 8.5 11 15.5M16.5 8.5 13 15.5" /></svg>
+            </button>
+            <button class="round-btn active" id="tgl-midline" title="Toggle midline" aria-pressed="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v18M4 12h4m8 0h4M6 9l-2 3 2 3m12-6 2 3-2 3" /></svg>
+            </button>
+          </div>
+          <span class="demo-badge hidden" id="demo-badge">Demo scores</span>
+        </div>
+
+        <div class="card overall">
+          <div class="ring" id="overall-ring"></div>
+          <div class="overall-body">
+            <p class="tier" id="overall-tier"></p>
+            <p class="potential" id="overall-potential"></p>
+            <p class="muted small" id="overall-confidence"></p>
+          </div>
+        </div>
+
+        <div class="warnings hidden" id="warnings"></div>
+
+        <div class="note" id="fastest-gain"></div>
+
+        <div class="section-head">
+          <h3 class="section-title">Score Breakdown</h3>
+          <span class="muted small">5 categories</span>
+        </div>
+        <div class="grid" id="breakdown"></div>
+
+        <p class="disclaimer">
+          <strong>Just an estimate.</strong> These scores are an approximate, opinion-based read of one photo, heavily affected by lighting, angle and camera.
+          They are not an objective measure of attractiveness or worth, and not medical advice. For skin concerns, see a dermatologist.
+        </p>
+
+        <button class="btn btn-primary btn-block" data-goto="improve">See your improvement plan →</button>
+      </div>
+    </section>
+
+    <!-- ============ IMPROVE ============ -->
+    <section class="view hidden" id="view-improve" data-view="improve">
+      <div class="empty" data-empty>
+        <p class="empty-ic">✨</p>
+        <h2>Your plan appears here</h2>
+        <p class="muted">After a scan you'll get prioritized, practical tips.</p>
+        <button class="btn btn-primary" data-goto="analyze">Start a scan</button>
+      </div>
+      <div data-filled class="hidden">
+        <header class="page-head">
+          <div>
+            <h1>Focus Areas</h1>
+            <p class="muted small">Ordered by where small changes help most</p>
+          </div>
+        </header>
+        <div id="focus-list" class="focus-list"></div>
+        <p class="disclaimer">Tips are general suggestions, not medical advice. Patch-test new skincare and stop if anything irritates.</p>
+      </div>
+    </section>
+
+    <!-- ============ PRODUCTS ============ -->
+    <section class="view hidden" id="view-products" data-view="products">
+      <div class="empty" data-empty>
+        <p class="empty-ic">🧴</p>
+        <h2>Product ideas appear here</h2>
+        <p class="muted">Recommendations are matched to what your scan finds.</p>
+        <button class="btn btn-primary" data-goto="analyze">Start a scan</button>
+      </div>
+      <div data-filled class="hidden">
+        <header class="page-head">
+          <div>
+            <h1>Products</h1>
+            <p class="muted small">Matched to your focus areas</p>
+          </div>
+        </header>
+        <div id="product-groups"></div>
+        <p class="disclaimer">Example picks only — not sponsored or endorsed. Check ingredients against your own skin and allergies.</p>
+      </div>
+    </section>
+
+    <!-- ============ TAB BAR ============ -->
+    <nav class="tabbar" aria-label="Main">
+      <button class="tab active" data-tab="analyze">
+        <svg viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" /><circle cx="12" cy="12" r="3" /></svg>
+        <span>Analyze</span>
+      </button>
+      <button class="tab" data-tab="report">
+        <svg viewBox="0 0 24 24"><path d="M5 20V12M10 20V6M15 20v-9M20 20V9" /></svg>
+        <span>Report</span>
+      </button>
+      <button class="tab" data-tab="improve">
+        <svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" /></svg>
+        <span>Improve</span>
+      </button>
+      <button class="tab" data-tab="products">
+        <svg viewBox="0 0 24 24"><path d="M9 3h6v4l2 3v10a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V10l2-3z" /><path d="M7 13h10" /></svg>
+        <span>Products</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============ CAMERA ============ -->
+  <div class="overlay camera hidden" id="camera" role="dialog" aria-label="Camera">
+    <video id="video" playsinline muted autoplay></video>
+    <svg class="camera-mask" viewBox="0 0 100 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><mask id="m"><rect width="100" height="140" fill="#fff" /><ellipse cx="50" cy="64" rx="31" ry="41" fill="#000" /></mask></defs>
+      <rect width="100" height="140" fill="rgba(5,7,12,.55)" mask="url(#m)" />
+      <ellipse cx="50" cy="64" rx="31" ry="41" fill="none" stroke="#21d4fd" stroke-width=".6" stroke-dasharray="2 2" />
+    </svg>
+    <p class="camera-hint">Center your face in the oval</p>
+    <div class="camera-bar">
+      <button class="icon-btn" id="cam-close" aria-label="Close camera"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
+      <button class="shutter" id="cam-shutter" aria-label="Take photo"></button>
+      <button class="icon-btn" id="cam-flip" aria-label="Switch camera"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><path d="M9 13a3 3 0 0 1 5.2-2M15 13a3 3 0 0 1-5.2 2M14 9v2h-2M10 17v-2h2" /></svg></button>
+    </div>
+  </div>
+
+  <!-- ============ ANALYZING ============ -->
+  <div class="overlay analyzing hidden" id="analyzing" role="status" aria-live="polite">
+    <div class="scan-frame">
+      <canvas id="scan-preview"></canvas>
+      <div class="scan-line"></div>
+    </div>
+    <p class="scan-step" id="scan-step">Detecting face…</p>
+    <div class="scan-progress"><div id="scan-bar"></div></div>
+  </div>
+
+  <!-- ============ ERROR SHEET ============ -->
+  <div class="sheet-backdrop hidden" id="sheet">
+    <div class="sheet" role="alertdialog" aria-labelledby="sheet-title" aria-describedby="sheet-msg">
+      <div class="sheet-ic" id="sheet-ic">⚠️</div>
+      <h2 id="sheet-title">Something went wrong</h2>
+      <p class="muted" id="sheet-msg"></p>
+      <div class="sheet-actions">
+        <button class="btn btn-primary btn-block" id="sheet-retry">Try again</button>
+        <button class="btn btn-ghost btn-block hidden" id="sheet-alt"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
