@@ -6,8 +6,14 @@
   <meta name="theme-color" content="#0a0c11" />
   <meta name="description" content="Take a selfie and get an encouraging appearance report with tips and product ideas. Your photo never leaves your device." />
   <title>Appearance Rater</title>
-  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Face Check" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <div class="app" id="app">
@@ -78,6 +84,14 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
         <p><strong>Private by design.</strong> Your photo is analyzed on this device and is never uploaded or saved.</p>
       </div>
+
+      <details class="about">
+        <summary>About &amp; privacy</summary>
+        <p>Face Check gives a light-hearted, opinion-based estimate from one photo. Scores are approximate and depend heavily on lighting, angle and camera. They aren't a measure of your worth, and they aren't medical advice.</p>
+        <p><strong>Your data:</strong> the photo is processed in your browser and is never sent to any server. Nothing is stored, and there are no accounts, analytics or ads. The face-detection model downloads once from the jsDelivr CDN.</p>
+        <p><strong>Intended for adults (18+).</strong> Product links are examples, not sponsored.</p>
+        <p><a href="https://github.com/Zynx0-ops/appearance-rater" target="_blank" rel="noopener noreferrer">Source code on GitHub</a></p>
+      </details>
     </section>
 
     <!-- ============ REPORT ============ -->
@@ -242,6 +256,6 @@
 
   <div class="toast hidden" id="toast"></div>
 
-  <script type="module" src="/js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

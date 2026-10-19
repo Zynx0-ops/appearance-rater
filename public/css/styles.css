@@ -297,3 +297,8 @@ h2 { font-size: 20px; font-weight: 750; letter-spacing: -.01em; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 .grid .score-card:last-child:nth-child(odd) { grid-column: span 2; }
+
+.about { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; font-size: 13.5px; line-height: 1.5; color: #c9cede; }
+.about summary { cursor: pointer; font-weight: 700; color: var(--text); }
+.about p { margin-top: 10px; }
+.about a { color: var(--accent-2); }
