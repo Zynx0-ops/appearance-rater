@@ -2,12 +2,17 @@
 
 Take a selfie (or upload a photo) and get an encouraging appearance report: an overall score, a breakdown across five dimensions, prioritized tips, and product ideas matched to those tips.
 
+**Try it on your phone:** https://zynx0-ops.github.io/appearance-rater/
+
+To install it like an app, open the link and tap **Share → Add to Home Screen** (iPhone, Safari) or **⋮ → Add to Home screen / Install app** (Android, Chrome).
+
 ## Summary: what was built
 
 - **A mobile-first web app** with four tabs: Analyze, Report, Improve and Products. It has a dark, card-based design: ring gauge for the overall score, color-coded score cards and numbered focus areas.
 - **Real on-device face analysis.** [face-api.js](https://github.com/vladmandic/face-api) (TensorFlow.js) runs in the browser to detect the face, find 68 facial landmarks and read the expression. Then hand-written image heuristics score skin, symmetry, grooming, hair and presentation.
-- **A zero-dependency Node server.** It serves the app and turns scores into ranked suggestions and products. The tips and products live in editable JSON files.
-- **Privacy:** the photo never leaves the browser. Only the five numeric scores and finding IDs are sent to the server. Nothing is written to disk.
+- **A fully static app**, hosted free on GitHub Pages. There is no backend: a small in-browser module turns scores into ranked suggestions and products, using two editable JSON files.
+- **Installable on phones:** it has a web app manifest and home-screen icons, so it opens full-screen like a native app.
+- **Privacy:** the photo never leaves the browser and nothing is stored. There are no accounts, analytics or ads.
 
 **Limitations (please read):**
 
@@ -20,9 +25,9 @@ Take a selfie (or upload a photo) and get an encouraging appearance report: an o
 
 ---
 
-## Quick start
+## Run it locally
 
-Requires **Node.js 18+**. There are no npm dependencies to install.
+Requires **Node.js 18+**. There are no npm dependencies to install. `npm start` runs a tiny static file server.
 
 ```bash
 git clone https://github.com/Zynx0-ops/appearance-rater.git
@@ -39,6 +44,12 @@ The server prints a `Network:` URL (for example `http://192.168.1.20:3000`). Ope
 - **Upload a photo** works everywhere.
 - **Take a selfie** uses the live in-app camera on `localhost` or HTTPS. Over plain-HTTP LAN addresses, browsers block `getUserMedia`, so the app falls back to the phone's native camera picker. That still works. You just don't get the in-app oval guide.
 
+### Deployment (GitHub Pages)
+
+Every push to `main` runs the tests and then publishes the `public/` folder to GitHub Pages, using `.github/workflows/pages.yml`. All paths in the app are relative, so it works at `https://<user>.github.io/<repo>/` or on any other static host (Netlify, Cloudflare Pages, Vercel, an S3 bucket).
+
+If you fork the repo, enable Pages once under **Settings → Pages → Source: GitHub Actions**.
+
 ### Tests
 
 ```bash
@@ -49,31 +60,33 @@ npm test
 
 ## How it works
 
+Everything runs in the browser:
+
 ```
-Browser                                              Node server (server.js)
-───────────────────────────────────────────────      ──────────────────────────────
-camera / file ─► canvas (≤1024px)                    
-             ─► analyzer.js                          
-                  face-api: detect + 68 landmarks    
-                  heuristics ─► 5 scores + findings ─► POST /api/recommendations
-                                                         lib/recommend.js
-                                                         + data/suggestions.json
-                                                         + data/products.json
-             ◄─ report, plan, products ◄───────────── ranked focus areas + products
+camera / file ─► canvas (≤1024px)
+             ─► analyzer.js
+                  face-api: detect + 68 landmarks + expression
+                  heuristics ─► 5 scores + findings
+             ─► recommend.js  (+ data/suggestions.json, data/products.json)
+                  ranked focus areas + products
+             ─► report, plan, products
 ```
 
 ### Project layout
 
 | Path | What it is |
 | --- | --- |
-| `server.js` | Static file server + JSON API (Node built-ins only) |
-| `lib/recommend.js` | Ranks findings into focus areas and attaches products |
-| `data/suggestions.json` | Every tip the app can give: title, summary, steps, product categories |
-| `data/products.json` | Example products per category, each with a reason it fits |
+| `public/` | The whole app. This folder is what gets deployed. |
+| `public/js/recommend.js` | Ranks findings into focus areas and attaches products |
+| `public/data/suggestions.json` | Every tip the app can give: title, summary, steps, product categories |
+| `public/data/products.json` | Example products per category, each with a reason it fits |
+| `public/manifest.webmanifest`, `public/*.png` | Home-screen install manifest and icons |
 | `public/js/analyzer.js` | **The swappable analysis module.** It contains all scoring logic. |
 | `public/js/app.js` | UI: capture, upload, errors, rendering |
 | `public/index.html`, `public/css/styles.css` | Markup and styling |
+| `server.js` | Local static file server (Node built-ins only) |
 | `test/` | Unit tests for the recommendation engine |
+| `.github/workflows/pages.yml` | Tests and deploys to GitHub Pages on every push |
 
 ### Scoring
 
@@ -90,7 +103,7 @@ Before scoring, the face is rotated so the eyes are level and rescaled to a fixe
 - **Overall** is the weighted average.
 - **Potential** estimates where the overall score could go with consistent effort. It assumes the changeable dimensions (skin, grooming, hair, presentation) close part of their gap, while symmetry barely moves.
 - **Confidence** drops when there are lighting, blur, pose or hair-visibility warnings.
-- Each detected issue becomes a **finding** with a severity (e.g. `skin_redness: 0.6`). The server ranks findings by dimension score, severity and how improvable that dimension is. It then attaches products from the matching categories.
+- Each detected issue becomes a **finding** with a severity (e.g. `skin_redness: 0.6`). `recommend.js` ranks findings by dimension score, severity and how improvable that dimension is. It then attaches products from the matching categories.
 
 Raw measurements are logged to the browser console (`[analysis] …`) after every scan. This makes it easy to tune the thresholds in `analyzer.js`.
 
@@ -103,7 +116,7 @@ Raw measurements are logged to the browser console (`[analysis] …`) after ever
   overall, potential, confidence,
   scores:   { skin, symmetry, grooming, hair, presentation },  // 0–100
   labels:   { skin: 'Clear', ... },
-  findings: [{ id: 'skin_texture', severity: 0.4 }, ...],    // ids from data/suggestions.json
+  findings: [{ id: 'skin_texture', severity: 0.4 }, ...],    // ids from public/data/suggestions.json
   warnings: ['...'],
   overlay:  { points, midline, sourceWidth },                   // for the photo overlay
   engine
@@ -114,10 +127,10 @@ To use a different model or a cloud vision API, replace the internals and keep t
 
 ### Editing tips and products
 
-- Add or change products in `data/products.json`. Each category is a list of `{ name, brand, price, reason }`.
-- Change the advice in `data/suggestions.json`. Each suggestion's `products` array lists which categories to pull from.
+- Add or change products in `public/data/products.json`. Each category is a list of `{ name, brand, price, reason }`.
+- Change the advice in `public/data/suggestions.json`. Each suggestion's `products` array lists which categories to pull from.
 
-The server re-reads both files on every request, so edits show up without a restart. The products are illustrative examples, not endorsements or affiliate links.
+Refresh the page to see edits locally. Push to `main` to update the live site. The products are illustrative examples, not endorsements or affiliate links.
 
 ### Error handling
 
@@ -135,8 +148,9 @@ The server re-reads both files on every request, so edits show up without a rest
 ### Privacy
 
 - The photo is decoded and analyzed entirely in the browser, and is never uploaded.
-- Only scores and finding IDs (a few hundred bytes) go to `/api/recommendations`. The server rejects bodies over 16 KB and stores nothing.
+- No data is sent anywhere. Recommendations are computed in the browser. The only network requests are for the app's own files and the face-detection model from jsDelivr.
 - The full-size image is discarded right after analysis. A small display copy stays in memory for the report until you close the tab or tap ✕ on the report.
+- The app shows an "About & privacy" note on the home screen. It says the app is intended for adults (18+).
 
 ## License
 
