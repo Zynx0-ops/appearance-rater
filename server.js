@@ -1,19 +1,17 @@
-// Appearance Rater — zero-dependency Node server.
+// Appearance Rater — zero-dependency local dev server.
 //
-// Serves the single-page app from /public and exposes a small JSON API that
-// turns analysis scores into suggestions + product recommendations.
-// Photos are analyzed in the browser and are never sent to this server.
+// The app is fully static (everything in /public), so this just serves files.
+// In production it's hosted on GitHub Pages. Photos are analyzed in the
+// browser and are never sent anywhere.
 
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
-const { buildRecommendations, loadCatalog } = require('./lib/recommend');
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
-const MAX_BODY_BYTES = 16 * 1024; // the API only accepts small JSON score payloads
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -28,38 +26,6 @@ const MIME = {
   '.ico': 'image/x-icon',
   '.webmanifest': 'application/manifest+json',
 };
-
-function sendJson(res, status, body) {
-  res.writeHead(status, {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store',
-  });
-  res.end(JSON.stringify(body));
-}
-
-function readJsonBody(req) {
-  return new Promise((resolve, reject) => {
-    let size = 0;
-    const chunks = [];
-    req.on('data', (chunk) => {
-      size += chunk.length;
-      if (size > MAX_BODY_BYTES) {
-        reject(Object.assign(new Error('Payload too large'), { status: 413 }));
-        req.destroy();
-        return;
-      }
-      chunks.push(chunk);
-    });
-    req.on('end', () => {
-      try {
-        resolve(JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}'));
-      } catch {
-        reject(Object.assign(new Error('Invalid JSON'), { status: 400 }));
-      }
-    });
-    req.on('error', reject);
-  });
-}
 
 function serveStatic(req, res) {
   const urlPath = decodeURIComponent(new URL(req.url, 'http://x').pathname);
@@ -86,37 +52,9 @@ function serveStatic(req, res) {
   });
 }
 
-async function handleApi(req, res) {
-  const { pathname } = new URL(req.url, 'http://x');
-
-  if (req.method === 'GET' && pathname === '/api/health') {
-    return sendJson(res, 200, { ok: true });
-  }
-
-  if (req.method === 'GET' && pathname === '/api/products') {
-    return sendJson(res, 200, loadCatalog().products);
-  }
-
-  if (req.method === 'POST' && pathname === '/api/recommendations') {
-    try {
-      const body = await readJsonBody(req);
-      return sendJson(res, 200, buildRecommendations(body));
-    } catch (err) {
-      return sendJson(res, err.status || 400, { error: err.message });
-    }
-  }
-
-  return sendJson(res, 404, { error: 'Unknown endpoint' });
-}
-
 function createServer() {
   return http.createServer((req, res) => {
-    if (req.url.startsWith('/api/')) {
-      handleApi(req, res).catch((err) => {
-        console.error(err);
-        sendJson(res, 500, { error: 'Server error' });
-      });
-    } else if (req.method === 'GET' || req.method === 'HEAD') {
+    if (req.method === 'GET' || req.method === 'HEAD') {
       serveStatic(req, res);
     } else {
       res.writeHead(405).end('Method not allowed');

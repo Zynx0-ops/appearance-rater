@@ -1,7 +1,8 @@
 // UI controller: capture/upload, run the analyzer, render the report.
-// All scoring logic lives in analyzer.js; all advice content comes from the server.
+// All scoring logic lives in analyzer.js; advice comes from recommend.js + data/.
 
 import { analyzePhoto, preloadEngine, AnalysisError, DIMENSIONS } from './analyzer.js';
+import { buildRecommendations, loadCatalog } from './recommend.js';
 
 const $ = (sel) => document.querySelector(sel);
 const ENGINE = new URLSearchParams(location.search).get('engine') === 'demo' ? 'demo' : 'face-api';
@@ -95,6 +96,7 @@ function setEngineStatus(kind, text) {
 if (ENGINE === 'demo') {
   setEngineStatus('demo', 'Demo mode');
 } else {
+  loadCatalog().catch(() => {}); // prefetch tips
   preloadEngine(ENGINE)
     .then(() => setEngineStatus('ready', 'On-device AI ready'))
     .catch(() => setEngineStatus('error', 'Model offline'));
@@ -254,16 +256,10 @@ async function runAnalysis(canvas) {
     const result = await analyzePhoto(canvas, { engine: ENGINE });
     let recs = null;
     try {
-      const res = await fetch('/api/recommendations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ scores: result.scores, findings: result.findings }),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      recs = await res.json();
+      recs = buildRecommendations({ scores: result.scores, findings: result.findings }, await loadCatalog());
     } catch (e) {
       console.warn('Recommendations unavailable', e);
-      toast("Couldn't load tips from the server — scores are still shown.");
+      toast("Couldn't load tips — scores are still shown.");
     }
     await minTime;
     $('#scan-bar').style.width = '100%';
@@ -440,7 +436,7 @@ function productCard(p) {
 function renderImprove() {
   const areas = state.recs?.focusAreas || [];
   if (!areas.length) {
-    $('#focus-list').innerHTML = '<p class="muted">Tips are unavailable right now. Make sure the server is running and try again.</p>';
+    $('#focus-list').innerHTML = '<p class="muted">Tips are unavailable right now. Check your connection and try again.</p>';
     return;
   }
   $('#focus-list').innerHTML = areas.map((a, i) => {

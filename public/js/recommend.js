@@ -2,13 +2,10 @@
 // of focus areas, each with steps and matching products.
 //
 // Content lives in data/suggestions.json and data/products.json so it can be
-// edited without touching code.
+// edited without touching code. Runs in the browser; the catalog is passed in
+// so this module also works under Node for tests.
 
-const fs = require('node:fs');
-const path = require('node:path');
-
-const DATA_DIR = path.join(__dirname, '..', 'data');
-const DIMENSIONS = ['skin', 'symmetry', 'grooming', 'hair', 'presentation'];
+export const DIMENSION_IDS = ['skin', 'symmetry', 'grooming', 'hair', 'presentation'];
 const MAX_FOCUS_AREAS = 5;
 const MAX_PRODUCTS_PER_AREA = 3;
 
@@ -24,15 +21,24 @@ const MAINTAIN_TAG = {
   symmetry: 'symmetry_balance',
 };
 
-function readJson(file) {
-  const raw = JSON.parse(fs.readFileSync(path.join(DATA_DIR, file), 'utf8'));
-  delete raw._comment;
-  return raw;
-}
+let catalogPromise = null;
 
-// Re-read on every call so edits to the JSON files show up without a restart.
-function loadCatalog() {
-  return { suggestions: readJson('suggestions.json'), products: readJson('products.json') };
+/** Loads both JSON catalogs once (relative URLs, so it works under any base path). */
+export function loadCatalog() {
+  if (!catalogPromise) {
+    const get = (file) =>
+      fetch(new URL(`../data/${file}`, import.meta.url)).then((r) => {
+        if (!r.ok) throw new Error(`Failed to load ${file}: HTTP ${r.status}`);
+        return r.json();
+      });
+    catalogPromise = Promise.all([get('suggestions.json'), get('products.json')])
+      .then(([suggestions, products]) => ({ suggestions, products }))
+      .catch((err) => {
+        catalogPromise = null; // allow retry
+        throw err;
+      });
+  }
+  return catalogPromise;
 }
 
 function clampScore(n) {
@@ -40,29 +46,29 @@ function clampScore(n) {
   return Number.isFinite(v) ? Math.max(0, Math.min(100, v)) : null;
 }
 
-function validateInput(body, suggestions) {
-  if (!body || typeof body !== 'object') throw Object.assign(new Error('Expected a JSON object'), { status: 400 });
+function validateInput(input, suggestions) {
+  if (!input || typeof input !== 'object') throw new Error('Expected an object');
 
   const scores = {};
-  for (const dim of DIMENSIONS) {
-    const v = clampScore(body.scores?.[dim]);
-    if (v === null) throw Object.assign(new Error(`Missing score for "${dim}"`), { status: 400 });
+  for (const dim of DIMENSION_IDS) {
+    const v = clampScore(input.scores?.[dim]);
+    if (v === null) throw new Error(`Missing score for "${dim}"`);
     scores[dim] = v;
   }
 
   const findings = [];
-  for (const f of Array.isArray(body.findings) ? body.findings.slice(0, 30) : []) {
+  for (const f of Array.isArray(input.findings) ? input.findings.slice(0, 30) : []) {
     const id = typeof f === 'string' ? f : f?.id;
-    if (typeof id !== 'string' || !suggestions[id]) continue; // ignore unknown ids
+    if (typeof id !== 'string' || id.startsWith('_') || !suggestions[id]) continue; // ignore unknown ids
     const severity = Math.max(0, Math.min(1, Number(f?.severity ?? 0.5) || 0));
     findings.push({ id, severity });
   }
   return { scores, findings };
 }
 
-function buildRecommendations(body) {
-  const { suggestions, products } = loadCatalog();
-  const { scores, findings } = validateInput(body, suggestions);
+export function buildRecommendations(input, catalog) {
+  const { suggestions, products } = catalog;
+  const { scores, findings } = validateInput(input, suggestions);
 
   const seen = new Set();
   const ranked = [];
@@ -81,7 +87,7 @@ function buildRecommendations(body) {
   // Fill with "maintain" tips for the lowest dimensions that have no finding,
   // so there are always a few useful suggestions.
   const covered = new Set(ranked.map((r) => suggestions[r.id].dimension));
-  const byScore = [...DIMENSIONS].sort((a, b) => scores[a] - scores[b]);
+  const byScore = [...DIMENSION_IDS].sort((a, b) => scores[a] - scores[b]);
   for (const dim of byScore) {
     if (ranked.length >= 3) break;
     if (covered.has(dim) || seen.has(MAINTAIN_TAG[dim])) continue;
@@ -119,5 +125,3 @@ function buildRecommendations(body) {
 
   return { focusAreas };
 }
-
-module.exports = { buildRecommendations, loadCatalog, DIMENSIONS };
